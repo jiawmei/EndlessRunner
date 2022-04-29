@@ -4,13 +4,20 @@ class Player extends Phaser.Physics.Arcade.Sprite {
 
         scene.physics.add.existing(this);
         this.scene.add.existing(this);
+        this.setPushable(true);
         this.setGravityY(gameOptions.playerGravity);
         this.isJumping = true;
-        //fthis.setPushable(false);
+    }
+
+    create() {
+        this.setVelocity(100, 200);
+        this.setPushable(false);
+        this.setGravityY(gameOptions.playerGravity);
+        this.isJumping = true;
     }
 
     update() {
-        //this.x = gameOptions.playerStartPosition;
+        this.setVelocityX(0);
 
         if (!this.isJumping && Phaser.Input.Keyboard.JustDown(keyF)) {
             this.isJumping = true;
@@ -18,6 +25,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         }
 
         if (this.body.touching.down) {
+            this.setVelocityX(gameOptions.platformStartSpeed);
             this.isJumping = false;
         }
     }

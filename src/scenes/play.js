@@ -26,7 +26,6 @@ class Play extends Phaser.Scene {
         this.addPlatform(game.config.width, game.config.width / 2);
 
         this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "player");
-        this.player.setPushable(false);
         this.physics.add.collider(this.player, this.platformGroup);
 
         keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
@@ -66,8 +65,7 @@ class Play extends Phaser.Scene {
         }
         else{
             platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
-            //platform.setImmovable(true);
-            platform.setPushable(false);
+            platform.setImmovable();
             platform.setVelocityX(gameOptions.platformStartSpeed * -1);
             this.platformGroup.add(platform);
         }
