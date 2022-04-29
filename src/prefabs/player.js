@@ -9,13 +9,6 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.isJumping = true;
     }
 
-    create() {
-        this.setVelocity(100, 200);
-        this.setPushable(false);
-        this.setGravityY(gameOptions.playerGravity);
-        this.isJumping = true;
-    }
-
     update() {
         this.setVelocityX(0);
 
