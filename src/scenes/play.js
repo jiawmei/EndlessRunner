@@ -23,12 +23,25 @@ class Play extends Phaser.Scene {
             }
         });
 
+        gameOptions.currSpeed = gameOptions.platformStartSpeed;
+
         this.addPlatform(game.config.width, game.config.width / 2);
 
         this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "player");
         this.physics.add.collider(this.player, this.platformGroup);
 
-        keyF = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.F);
+        keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        
+        var timer = this.time.addEvent({
+            delay: 500,
+            callback: this.onEvent,
+            callbackScope: this,
+            loop: true
+        });
+    }
+
+    onEvent() {
+       gameOptions.currSpeed *= 1.02;
     }
     
     update() {
@@ -61,12 +74,13 @@ class Play extends Phaser.Scene {
             platform.x = posX;
             platform.active = true;
             platform.visible = true;
+            platform.setVelocityX(gameOptions.currSpeed * -1);
             this.platformPool.remove(platform);
         }
         else{
             platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
             platform.setImmovable();
-            platform.setVelocityX(gameOptions.platformStartSpeed * -1);
+            platform.setVelocityX(gameOptions.currSpeed * -1);
             this.platformGroup.add(platform);
         }
         platform.displayWidth = platformWidth;
