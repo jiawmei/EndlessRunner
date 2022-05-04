@@ -1,7 +1,7 @@
 let config = {
     type: Phaser.CANVAS,
-    width: 1334,
-    height: 750,
+    width: 1334, // backgrounds are 1920x1090, scale down
+    height: 750, 
     scene: [ Menu, Play ],
 
     physics: {
@@ -14,11 +14,11 @@ let game = new Phaser.Game(config);
 let keyUp, keyDown, keyEnter;
 
 let gameOptions = {
-    platformStartSpeed: 400,
+    platformStartSpeed: 1000,
     spawnRange: [150, 400],
-    platformSizeRange: [150, 200],
-    playerGravity: 1000,
-    jumpForce: 500,
+    platformSizeRange: [200, 300],
+    playerGravity: 2250,
+    jumpForce: 1000,
     playerStartPosition: config.width / 2,
     currSpeed: 0,
     jumps: 1

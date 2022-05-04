@@ -3,24 +3,36 @@ class Menu extends Phaser.Scene {
         super("menuScene");
     }
 
+    preload(){
+        this.load.image('title','./assets/Title-01.png');
+        this.load.spritesheet('titlecharacter', './assets/boyNoArrowAnim.png', {frameWidth: 200, frameHeight: 200, startFrame: 0, endFrame: 2});
+    }
     create() {
         //menu text configuration
         let titleConfig = {
             fontFamily: 'Arial',
             fontSize: '40px',
-            color: "#FFFFFF",
+            color: "#C603FC",
             align: "center"
         }
         let selectionConfig = {
             fontFamily: "Arial",
             fontSize: '20px',
-            color : '#FFFFFF',
+            color : "#8403FC",
             align: 'center'
         }
-
-        //show menu text
-        this.add.text(500, 200, "Run Away From Religious Guy", titleConfig).setOrigin(0.5);
-        this.add.text(500, 500, "Press Enter to Start", selectionConfig).setOrigin(0.5);
+        
+        /*this.anims.create({
+            key: 'jump',
+            frames: this.anims.generateFrameNumbers('titleCharacter', { start: 0, end: 2, first: 0}),
+            frameRate: 30,
+            repeat: -1
+        });
+        var char = this.add.sprite(500, 500, 'titleCharacter');
+        char.play("jump");
+        */
+        // background needs fixing
+        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'title').setOrigin(0,0);
         
         //define keys
         keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
@@ -28,7 +40,6 @@ class Menu extends Phaser.Scene {
     
     update() {
         if (Phaser.Input.Keyboard.JustDown(keyEnter)) {
-            
             this.scene.start('playScene');
         }
         

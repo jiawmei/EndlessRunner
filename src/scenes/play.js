@@ -6,8 +6,11 @@ class Play extends Phaser.Scene {
     preload() {
         this.load.image("platform", "./assets/Ground1.png");
         this.load.image("player", "./assets/player.png");
-        this.load.image("arrow", "./assets/arrow.png")
-        this.load.image("background", "./assets/Morning-01.png")
+        this.load.image("arrow", "./assets/arrow.png");
+        this.load.image("background", "./assets/Morning-01.png");
+        this.load.image("boy", "./assets/boy.png");
+        this.load.image("ground1", "./assets/Ground1.png");
+        //this.load.image("girl", "./assets/girl.png");
     }
 
     create() {
@@ -19,13 +22,13 @@ class Play extends Phaser.Scene {
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
         
         //make the ground
-        this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.9, "platform");
+        this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
         this.platform.displayWidth = game.config.width;
         this.platform.displayHeight = 50;
         this.platform.setImmovable(true);
 
         //make the player
-        this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "player");
+        this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "boy");
         
         //set collision
         this.physics.add.collider(this.player, this.platform);
@@ -71,14 +74,23 @@ class Play extends Phaser.Scene {
     }
     
     update() {
-
+        this.background.tilePositionX -= 2;
+        let textConfig = {
+            fontFamily: 'Arial',
+            fontSize: '40px',
+            color: "#C603FC",
+            align: "center"
+        }
         if (this.player.gameOver) {
             this.timer.remove();
             this.arrowTimer.remove();
-            this.scene.start("playScene");
+            //this.scene.start("playScene");
+            //this.background.tilePositionX -= 0;
+            //this.add.text(700,200, "You Lose", textConfig).setOrigin(0.5);
+            console.log("lose");
+            this.scene.restart();
         }
-
-        this.background.tilePositionX -= 2;
+        
 
         if (!this.player.gameOver) {
             this.player.update();
