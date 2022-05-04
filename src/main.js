@@ -16,10 +16,10 @@ let keyUp, keyDown, keyEnter;
 let gameOptions = {
     platformStartSpeed: 400,
     spawnRange: [150, 400],
-    platformSizeRange: [100, 300],
+    platformSizeRange: [150, 200],
     playerGravity: 1000,
-    jumpForce: 400,
-    playerStartPosition: 200,
+    jumpForce: 500,
+    playerStartPosition: config.width / 2,
     currSpeed: 0,
-    jumps: 2
+    jumps: 1
 }

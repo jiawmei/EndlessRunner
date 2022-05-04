@@ -4,86 +4,86 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("platform", "./assets/platform.png");
+        this.load.image("platform", "./assets/Ground1.png");
         this.load.image("player", "./assets/player.png");
+        this.load.image("arrow", "./assets/arrow.png")
+        this.load.image("background", "./assets/Morning-01.png")
     }
 
     create() {
-        this.platformGroup = this.add.group({
+    
+        //make the background
+        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background').setOrigin(0,0);
 
-            removeCallback: function(platform) {
-                platform.scene.platformPool.add(platform);
-            }
-        });
-
-        this.platformPool = this.add.group({
-
-            removeCallback: function(platform) {
-                platform.scene.platformGroup.add(platform);
-            }
-        });
-
+        //setting the current speed to starting speed
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
-
-        this.addPlatform(game.config.width, game.config.width / 2);
-
-        this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "player");
-        this.physics.add.collider(this.player, this.platformGroup);
-
-        keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
         
-        var timer = this.time.addEvent({
-            delay: 500,
-            callback: this.onEvent,
+        //make the ground
+        this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.9, "platform");
+        this.platform.displayWidth = game.config.width;
+        this.platform.displayHeight = 50;
+        this.platform.setImmovable(true);
+
+        //make the player
+        this.player = new Player(this, gameOptions.playerStartPosition, game.config.height / 2, "player");
+        
+        //set collision
+        this.physics.add.collider(this.player, this.platform);
+
+        //assign keys
+        keyUp = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.UP);
+        keyDown = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.DOWN);
+
+        //speed up timer
+        this.timer = this.time.addEvent({
+            delay: 3000,
+            callback: this.speedUp,
             callbackScope: this,
             loop: true
         });
+
+        //spawns random arrows
+        this.arrowTimer = this.time.addEvent({
+            delay: 1000,
+            callback: this.spawnArrow,
+            callbackScope: this,
+            loop: true
+        });
+        
     }
 
-    onEvent() {
-       gameOptions.currSpeed *= 1.02;
+    //spawns an arrow at a random height
+    spawnArrow() {
+        this.arrow = new Arrow(this, 0, game.config.height -Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]), "arrow");
+        //set arrow to current speed
+        this.arrow.setVelocityX(gameOptions.currSpeed);
+        //scale down the arrow
+        this.arrow.setDisplaySize(50, 50);
+        //when colliding with an arrow
+        this.physics.add.collider(this.player, this.arrow, function(player) {
+            player.gameOver = true;
+        }); 
+    }
+
+    //increases the current speed
+    speedUp() {
+       gameOptions.currSpeed *= 1.05;
     }
     
     update() {
-        if (this.player.y > game.config.height) {
+
+        if (this.player.gameOver) {
+            this.timer.remove();
+            this.arrowTimer.remove();
             this.scene.start("playScene");
         }
 
-        this.player.update();
+        this.background.tilePositionX -= 2;
 
-        let minDistance = game.config.width;
-        this.platformGroup.getChildren().forEach(function(platform) {
-            let platformDistance = game.config.width - platform.x - platform.displayWidth / 2;
-            minDistance = Math.min(minDistance, platformDistance);
-            if (platform.x < - platform.displayWidth / 2) {
-                this.platformGroup.killAndHide(platform);
-                this.platformGroup.remove(platform);
-            }
-        }, this);
-
-        if (minDistance > this.nextPlatformDistance) {
-            var nextPlatformWidth = Phaser.Math.Between(gameOptions.platformSizeRange[0], gameOptions.platformSizeRange[1]);
-            this.addPlatform(nextPlatformWidth, game.config.width + nextPlatformWidth / 2);
+        if (!this.player.gameOver) {
+            this.player.update();
         }
+
     }
 
-    addPlatform(platformWidth, posX){
-        let platform;
-        if(this.platformPool.getLength()){
-            platform = this.platformPool.getFirst();
-            platform.x = posX;
-            platform.active = true;
-            platform.visible = true;
-            platform.setVelocityX(gameOptions.currSpeed * -1);
-            this.platformPool.remove(platform);
-        }
-        else{
-            platform = this.physics.add.sprite(posX, game.config.height * 0.8, "platform");
-            platform.setImmovable();
-            platform.setVelocityX(gameOptions.currSpeed * -1);
-            this.platformGroup.add(platform);
-        }
-        platform.displayWidth = platformWidth;
-        this.nextPlatformDistance = Phaser.Math.Between(gameOptions.spawnRange[0], gameOptions.spawnRange[1]);
-    }
 }
