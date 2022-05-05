@@ -26,7 +26,11 @@ class Menu extends Phaser.Scene {
             color : "#8403FC",
             align: 'center'
         }
-        
+        this.backgroundMusic = this.sound.add('bgm', {volume:0.1});
+        this.backgroundMusic.setLoop(true);
+        if(!this.backgroundMusic.isPlaying){
+            this.backgroundMusic.play();
+        }
         /*this.anims.create({
             key: 'jump',
             frames: this.anims.generateFrameNumbers('titleCharacter', { start: 0, end: 2, first: 0}),

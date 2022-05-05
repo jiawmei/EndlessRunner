@@ -46,11 +46,7 @@ class Play extends Phaser.Scene {
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
         
         //play music
-        this.backgroundMusic = this.sound.add('bgm', {volume:0.1});
-        this.backgroundMusic.setLoop(true);
-        if(!this.backgroundMusic.isPlaying){
-            this.backgroundMusic.play();
-        }
+        
         
         //make the ground
         //this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
@@ -155,7 +151,7 @@ class Play extends Phaser.Scene {
         if (this.player.gameOver) {
             this.timer.remove();
             this.arrowTimer.remove();
-            this.sound.removeAll();
+            //this.sound.removeAll();
             this.player.alpha = 0;
             console.log("lose");
             this.scene.start('endScene');
