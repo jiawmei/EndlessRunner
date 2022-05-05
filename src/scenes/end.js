@@ -6,7 +6,6 @@ class End extends Phaser.Scene {
         this.load.image("morning", "./assets/Morning-01.png");
         this.load.image("afternoon", "./assets/Afternoon-01.png");
         this.load.image("night", "./assets/Night-01.png");
-        this.load.audio('bgm', './assets/BGM.wav');
     }
 
     create(){
