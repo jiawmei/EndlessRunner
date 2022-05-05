@@ -5,7 +5,10 @@ let config = {
     scene: [ Menu, Play ],
 
     physics: {
-        default: "arcade"
+        default: "arcade",
+        arcade: {
+            debug: true
+        }
     }
 }
 
@@ -18,8 +21,8 @@ let gameOptions = {
     spawnRange: [150, 400],
     platformSizeRange: [200, 300],
     playerGravity: 2250,
-    jumpForce: 1000,
-    playerStartPosition: config.width / 2,
+    jumpForce: 900,
+    playerStartPosition: 3 *config.width / 4,
     currSpeed: 0,
     jumps: 1
 }

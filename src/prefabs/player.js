@@ -18,6 +18,10 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             this.jump();
         }
 
+        if (Phaser.Input.Keyboard.JustDown(keyDown)) {
+            this.gravity();
+        }
+
         if (this.body.touching.down) {
             this.isJumping = false;
         }
@@ -30,6 +34,13 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             }
             this.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps ++;
+        }
+    }
+
+    //pulls the player down
+    gravity() {
+        if (!this.body.touching.down) {
+            this.setVelocityY(gameOptions.jumpForce);
         }
     }
     

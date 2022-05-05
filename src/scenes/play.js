@@ -51,8 +51,7 @@ class Play extends Phaser.Scene {
             callback: this.spawnArrow,
             callbackScope: this,
             loop: true
-        });
-        
+        });        
     }
 
     //spawns an arrow at a random height
@@ -62,10 +61,18 @@ class Play extends Phaser.Scene {
         this.arrow.setVelocityX(gameOptions.currSpeed);
         //scale down the arrow
         this.arrow.setDisplaySize(70, 30);
+        this.arrow.setSize(50, 20);
         //when colliding with an arrow
         this.physics.add.collider(this.player, this.arrow, function(player) {
             player.gameOver = true;
         }); 
+        //change the timing of arrows
+        this.arrowTimer.reset({
+            delay: Phaser.Math.Between(500, 1000),
+            callback: this.spawnArrow,
+            callbackScope: this,
+            loop: true
+        });
     }
 
     //increases the current speed
