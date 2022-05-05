@@ -1,8 +1,8 @@
 let config = {
     type: Phaser.CANVAS,
-    width: 1334, // backgrounds are 1920x1090, scale down
+    width: 1334,
     height: 750, 
-    scene: [ Menu, Play ],
+    scene: [ Menu, Play , End],
 
     physics: {
         default: "arcade",
@@ -15,7 +15,8 @@ let config = {
 let game = new Phaser.Game(config);
 
 let keyUp, keyDown, keyEnter;
-
+let randomNumb = Phaser.Math.Between(0,2);
+let score = 0;
 let gameOptions = {
     platformStartSpeed: 1000,
     spawnRange: [150, 400],

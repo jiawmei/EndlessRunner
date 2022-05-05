@@ -2,7 +2,9 @@ class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
     }
-
+    
+    
+    
     preload() {
         this.load.image("ground1", "./assets/Ground1.png");
         this.load.image("ground2", "./assets/Ground2.png");
@@ -22,7 +24,7 @@ class Play extends Phaser.Scene {
         
         
         // generate a random background every time you play
-        let randomNumb = Phaser.Math.Between(0,2);
+        
 
         if(randomNumb == 0){
             this.background = this.add.tileSprite(0, 0, config.width, config.height, 'morning').setOrigin(0,0);
@@ -84,7 +86,7 @@ class Play extends Phaser.Scene {
         });
         
         // scoreboard
-        this.score = 0;
+        
         let scoreConfig = {
             fontFamily: 'Courier',
             fontSize: '28px',
@@ -108,7 +110,7 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 100
         }
-        this.currentScore = this.add.text(1200, 50, this.score, scoreConfig);
+        this.currentScore = this.add.text(1200, 50, score, scoreConfig);
         this.scoreText = this.add.text(1100, 50, "Score:", scoreConfig);
     }
 
@@ -133,8 +135,8 @@ class Play extends Phaser.Scene {
         });
         
         // get a point every time a new arrow is spawned
-        this.score += 1;
-        this.currentScore.text = this.score;
+        score += 1;
+        this.currentScore.text = score;
     }
 
     //increases the current speed
@@ -156,7 +158,7 @@ class Play extends Phaser.Scene {
             this.sound.removeAll();
             this.player.alpha = 0;
             console.log("lose");
-            this.scene.restart();
+            this.scene.start('endScene');
         }
         
 
