@@ -84,6 +84,17 @@ class Play extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+
+        this.seconds = 0;
+        this.clock = this.time.addEvent({
+            delay: 1000,
+            callback: () => {
+                this.seconds += 1;
+                this.currentTime.text = this.seconds;
+            },
+            callbackScope: this,
+            loop: true
+        });
         
         // scoreboard
         
@@ -108,10 +119,12 @@ class Play extends Phaser.Scene {
                 top: 5,
                 bottom: 5,
             },
-            fixedWidth: 100
+            fixedWidth: 200
         }
-        this.currentScore = this.add.text(1200, 50, score, scoreConfig);
+        this.currentScore = this.add.text(1200, 50, this.clock, scoreConfig);
         this.scoreText = this.add.text(1100, 50, "Score:", scoreConfig);
+        this.currentTime = this.add.text(100, 50, this.seconds, scoreConfig);
+        this.timeText = this.add.text(0, 50, "Time:", scoreConfig);
     }
 
     //spawns an arrow at a random height

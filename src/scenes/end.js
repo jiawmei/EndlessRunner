@@ -21,11 +21,14 @@ class End extends Phaser.Scene {
         if(randomNumb == 2){
             this.background = this.add.tileSprite(0, 0, config.width, config.height, 'night').setOrigin(0,0);
         }
+
+        keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
     }
 
     update(){
         this.background.tilePositionX += 1.5;
         if (Phaser.Input.Keyboard.JustDown(keyEnter)){
+            console.log('TEST');
             this.scene.start('playScene');
         }
     }
