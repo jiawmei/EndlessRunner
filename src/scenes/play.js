@@ -61,7 +61,7 @@ class Play extends Phaser.Scene {
         //set arrow to current speed
         this.arrow.setVelocityX(gameOptions.currSpeed);
         //scale down the arrow
-        this.arrow.setDisplaySize(50, 50);
+        this.arrow.setDisplaySize(70, 30);
         //when colliding with an arrow
         this.physics.add.collider(this.player, this.arrow, function(player) {
             player.gameOver = true;
