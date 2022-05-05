@@ -42,6 +42,7 @@ class Menu extends Phaser.Scene {
         
         //define keys
         keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);
+
     }
     
     update() {

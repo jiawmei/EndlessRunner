@@ -15,6 +15,7 @@ let config = {
 let game = new Phaser.Game(config);
 
 let keyUp, keyDown, keyEnter;
+
 let randomNumb = Phaser.Math.Between(0,2);
 let score = 0;
 let gameOptions = {
