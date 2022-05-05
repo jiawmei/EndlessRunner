@@ -4,7 +4,7 @@ class Menu extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('title','./assets/Title-01.png');
+        this.load.image('title','./assets/FixedTitle.png');
         this.load.spritesheet('titlecharacter', './assets/boyNoArrowAnim.png', {frameWidth: 200, frameHeight: 200, startFrame: 0, endFrame: 2});
         this.load.audio('sfx_start', './assets/start1.wav');
         this.load.audio('sfx_jump', './assets/jump1.wav');
@@ -38,6 +38,7 @@ class Menu extends Phaser.Scene {
         */
         // background needs fixing
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'title').setOrigin(0,0);
+        
         
         //define keys
         keyEnter = this.input.keyboard.addKey(Phaser.Input.Keyboard.KeyCodes.ENTER);

@@ -4,31 +4,54 @@ class Play extends Phaser.Scene {
     }
 
     preload() {
-        this.load.image("platform", "./assets/Ground1.png");
+        this.load.image("ground1", "./assets/Ground1.png");
+        this.load.image("ground2", "./assets/Ground2.png");
+        this.load.image("ground3", "./assets/Ground3.png");
         this.load.image("player", "./assets/player.png");
         this.load.image("arrow", "./assets/arrow.png");
-        this.load.image("background", "./assets/Morning-01.png");
-        this.load.image("boy", "./assets/boy.png");
-        this.load.image("ground1", "./assets/Ground1.png");
+        this.load.image("morning", "./assets/Morning-01.png");
+        this.load.image("afternoon", "./assets/Afternoon-01.png");
+        this.load.image("night", "./assets/Night-01.png");
+        this.load.image("boy", "./assets/boyRight.png");
         //this.load.image("girl", "./assets/girl.png");
 
         this.load.spritesheet('hit', './assets/HIT.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
-    
-        //make the background
-        this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background').setOrigin(0,0);
+        
+        
+        // generate a random background every time you play
+        let randomNumb = Phaser.Math.Between(0,2);
 
-        this.backgroundMusic = this.sound.add('bgm');
-        this.backgroundMusic.setLoop(true);
-        this.backgroundMusic.play();
+        if(randomNumb == 0){
+            this.background = this.add.tileSprite(0, 0, config.width, config.height, 'morning').setOrigin(0,0);
+            this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground3");
+        }
+        
+        if(randomNumb == 1){
+            this.background = this.add.tileSprite(0, 0, config.width, config.height, 'afternoon').setOrigin(0,0);
+            this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground2");
+        }
+        
+        if(randomNumb == 2){
+            this.background = this.add.tileSprite(0, 0, config.width, config.height, 'night').setOrigin(0,0);
+            this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
+        }
+        
 
         //setting the current speed to starting speed
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
         
+        //play music
+        this.backgroundMusic = this.sound.add('bgm', {volume:0.1});
+        this.backgroundMusic.setLoop(true);
+        if(!this.backgroundMusic.isPlaying){
+            this.backgroundMusic.play();
+        }
+        
         //make the ground
-        this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
+        //this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
         this.platform.displayWidth = game.config.width;
         this.platform.displayHeight = 50;
         this.platform.setImmovable(true);
@@ -58,7 +81,35 @@ class Play extends Phaser.Scene {
             args: [this],
             callbackScope: this,
             loop: true
-        });        
+        });
+        
+        // scoreboard
+        this.score = 0;
+        let scoreConfig = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            backgroundColor: '#000000',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        let scoreConfig2 = {
+            fontFamily: 'Courier',
+            fontSize: '28px',
+            color: '#FFFFFF',
+            align: 'right',
+            padding: {
+                top: 5,
+                bottom: 5,
+            },
+            fixedWidth: 100
+        }
+        this.currentScore = this.add.text(1200, 50, this.score, scoreConfig);
+        this.scoreText = this.add.text(1100, 50, "Score:", scoreConfig);
     }
 
     //spawns an arrow at a random height
@@ -80,6 +131,10 @@ class Play extends Phaser.Scene {
             callbackScope: this,
             loop: true
         });
+        
+        // get a point every time a new arrow is spawned
+        this.score += 1;
+        this.currentScore.text = this.score;
     }
 
     //increases the current speed
@@ -88,7 +143,7 @@ class Play extends Phaser.Scene {
     }
     
     update() {
-        this.background.tilePositionX -= 2;
+        this.background.tilePositionX += 1.5;
         let textConfig = {
             fontFamily: 'Arial',
             fontSize: '40px',
@@ -99,9 +154,6 @@ class Play extends Phaser.Scene {
             this.timer.remove();
             this.arrowTimer.remove();
             this.sound.removeAll();
-            //this.scene.start("playScene");
-            //this.background.tilePositionX -= 0;
-            //this.add.text(700,200, "You Lose", textConfig).setOrigin(0.5);
             this.player.alpha = 0;
             console.log("lose");
             this.scene.restart();

@@ -9,8 +9,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.playerJumps = 0;
         //game over flag
         this.gameOver = false;
-        this.sfxJump = scene.sound.add('sfx_jump');
-        this.sfxFall = scene.sound.add('sfx_fall');
+        this.sfxJump = scene.sound.add('sfx_jump', {volume:0.1});
+        this.sfxFall = scene.sound.add('sfx_fall', {volume:0.1});
     }
 
     update() {
