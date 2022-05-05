@@ -11,12 +11,18 @@ class Play extends Phaser.Scene {
         this.load.image("boy", "./assets/boy.png");
         this.load.image("ground1", "./assets/Ground1.png");
         //this.load.image("girl", "./assets/girl.png");
+
+        this.load.spritesheet('hit', './assets/HIT.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
     create() {
     
         //make the background
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'background').setOrigin(0,0);
+
+        this.backgroundMusic = this.sound.add('bgm');
+        this.backgroundMusic.setLoop(true);
+        this.backgroundMusic.play();
 
         //setting the current speed to starting speed
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
@@ -49,6 +55,7 @@ class Play extends Phaser.Scene {
         this.arrowTimer = this.time.addEvent({
             delay: 1000,
             callback: this.spawnArrow,
+            args: [this],
             callbackScope: this,
             loop: true
         });        
@@ -91,9 +98,11 @@ class Play extends Phaser.Scene {
         if (this.player.gameOver) {
             this.timer.remove();
             this.arrowTimer.remove();
+            this.sound.removeAll();
             //this.scene.start("playScene");
             //this.background.tilePositionX -= 0;
             //this.add.text(700,200, "You Lose", textConfig).setOrigin(0.5);
+            this.player.alpha = 0;
             console.log("lose");
             this.scene.restart();
         }

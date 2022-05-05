@@ -9,6 +9,8 @@ class Player extends Phaser.Physics.Arcade.Sprite {
         this.playerJumps = 0;
         //game over flag
         this.gameOver = false;
+        this.sfxJump = scene.sound.add('sfx_jump');
+        this.sfxFall = scene.sound.add('sfx_fall');
     }
 
     update() {
@@ -32,6 +34,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
             if(this.body.touching.down){
                 this.playerJumps = 0;
             }
+            this.sfxJump.play();
             this.setVelocityY(gameOptions.jumpForce * -1);
             this.playerJumps ++;
         }
@@ -41,6 +44,7 @@ class Player extends Phaser.Physics.Arcade.Sprite {
     gravity() {
         if (!this.body.touching.down) {
             this.setVelocityY(gameOptions.jumpForce);
+            this.sfxFall.play();
         }
     }
     
