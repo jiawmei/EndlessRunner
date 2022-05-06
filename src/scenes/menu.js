@@ -27,15 +27,13 @@ class Menu extends Phaser.Scene {
             align: 'center'
         }
         
-        /*this.anims.create({
-            key: 'jump',
-            frames: this.anims.generateFrameNumbers('titleCharacter', { start: 0, end: 2, first: 0}),
-            frameRate: 30,
-            repeat: -1
-        });
-        var char = this.add.sprite(500, 500, 'titleCharacter');
-        char.play("jump");
-        */
+        //play music
+        this.backgroundMusic = this.sound.add('bgm', {volume:0.1});
+        this.backgroundMusic.setLoop(true);
+        if(!this.backgroundMusic.isPlaying){
+            this.backgroundMusic.play();
+        }
+        
         // background needs fixing
         this.background = this.add.tileSprite(0, 0, config.width, config.height, 'title').setOrigin(0,0);
         

@@ -1,6 +1,7 @@
 class Play extends Phaser.Scene {
     constructor() {
         super("playScene");
+        //this.sfxHit = scene.sound.add('sfx_hit', {volume:0.1});
     }
     
     
@@ -16,7 +17,7 @@ class Play extends Phaser.Scene {
         this.load.image("night", "./assets/Night-01.png");
         this.load.image("boy", "./assets/boyRight.png");
         //this.load.image("girl", "./assets/girl.png");
-
+        this.load.audio('hit', './assets/hit4.wav');
         this.load.spritesheet('hit', './assets/HIT.png', {frameWidth: 64, frameHeight: 32, startFrame: 0, endFrame: 9});
     }
 
@@ -24,7 +25,8 @@ class Play extends Phaser.Scene {
         
         
         // generate a random background every time you play
-        
+        let randomNumb = Phaser.Math.Between(0,2);
+        randomNumb2 = randomNumb;
 
         if(randomNumb == 0){
             this.background = this.add.tileSprite(0, 0, config.width, config.height, 'morning').setOrigin(0,0);
@@ -45,12 +47,6 @@ class Play extends Phaser.Scene {
         //setting the current speed to starting speed
         gameOptions.currSpeed = gameOptions.platformStartSpeed;
         
-        //play music
-        this.backgroundMusic = this.sound.add('bgm', {volume:0.1});
-        this.backgroundMusic.setLoop(true);
-        if(!this.backgroundMusic.isPlaying){
-            this.backgroundMusic.play();
-        }
         
         //make the ground
         //this.platform = this.physics.add.sprite(game.config.width / 2, game.config.height * 0.8, "ground1");
@@ -96,6 +92,7 @@ class Play extends Phaser.Scene {
             loop: true
         });
         
+        //this.sfxHit = scene.sound.add('sfx_hit', {volume:0.1});
         // scoreboard
         
         let scoreConfig = {
@@ -121,10 +118,10 @@ class Play extends Phaser.Scene {
             },
             fixedWidth: 200
         }
-        this.currentScore = this.add.text(1200, 50, this.clock, scoreConfig);
+        this.currentScore = this.add.text(1200, 50, score, scoreConfig);
         this.scoreText = this.add.text(1100, 50, "Score:", scoreConfig);
-        this.currentTime = this.add.text(100, 50, this.seconds, scoreConfig);
-        this.timeText = this.add.text(0, 50, "Time:", scoreConfig);
+        this.currentTime = this.add.text(150, 50, this.seconds, scoreConfig);
+        this.timeText = this.add.text(50, 50, "Time:", scoreConfig);
     }
 
     //spawns an arrow at a random height
@@ -137,6 +134,7 @@ class Play extends Phaser.Scene {
         this.arrow.setSize(50, 20);
         //when colliding with an arrow
         this.physics.add.collider(this.player, this.arrow, function(player) {
+            
             player.gameOver = true;
         }); 
         //change the timing of arrows
@@ -166,14 +164,18 @@ class Play extends Phaser.Scene {
             align: "center"
         }
         if (this.player.gameOver) {
+            secondss = this.seconds;
+            this.sound.play("hit");
             this.timer.remove();
             this.arrowTimer.remove();
-            this.sound.removeAll();
+            //this.sound.removeAll();
             this.player.alpha = 0;
             console.log("lose");
             this.scene.start('endScene');
         }
-        
+        if(score > highScore){
+            highScore = score;
+        }
 
         if (!this.player.gameOver) {
             this.player.update();
