@@ -2,7 +2,11 @@
 // Game Title: Escape From Wonderland
 // Date Completed: 6 May 2022
 //
-// Creative Tilt Justification: *add something
+// Creative Tilt Justification: One of the things that we included in our game was the random timing of arrows.
+// The arrows would be launched at the player at random intervals and also at random heights in which the player
+// would have to dodge. Also, another thing that we included was the ability to make your character fall faster
+// by clicking the down button. For visual style, we sought to make this game very lighthearted and fun. The visuals
+// were made to be very bright and pleasing to look at.
 
 let config = {
     type: Phaser.CANVAS,
@@ -13,7 +17,7 @@ let config = {
     physics: {
         default: "arcade",
         arcade: {
-            debug: true
+            debug: false
         }
     }
 }
